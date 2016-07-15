@@ -1,0 +1,31 @@
+﻿  Main.cpp
+D:\Files_Stepa\GDRive\Work\LS_Search\LS_Search\minisat\core/SolverTypes.h(97): warning C4800: int: принудительно задано логическое значение "true" или "false" (предупреждение о производительности)
+D:\Files_Stepa\GDRive\Work\LS_Search\LS_Search\minisat\core/SolverTypes.h(130): warning C4200: нестандартное расширение: массив нулевого размера в структуре (объединении)
+  D:\Files_Stepa\GDRive\Work\LS_Search\LS_Search\minisat\core/SolverTypes.h(130): note: Невозможно создать конструктор копии или оператор присвоения копии, когда UDT содержит массив нулевого размера
+D:\Files_Stepa\GDRive\Work\LS_Search\LS_Search\minisat\core/Solver.h(343): warning C4244: +=: преобразование "double" в "float", возможна потеря данных
+D:\Files_Stepa\GDRive\Work\LS_Search\LS_Search\minisat\core/Solver.h(346): warning C4305: *=: усечение из "double" к "float"
+Main.cpp(183): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+Main.cpp(211): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+Main.cpp(616): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+Main.cpp(679): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+Main.cpp(740): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+Main.cpp(793): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+Main.cpp(826): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+Main.cpp(910): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+Main.cpp(1666): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+Main.cpp(1748): warning C4267: =: преобразование из "size_t" в "int"; возможна потеря данных
+Main.cpp(1752): warning C4267: аргумент: преобразование из "size_t" в "int"; возможна потеря данных
+Main.cpp(1756): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+Main.cpp(1872): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+Main.cpp(2150): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+Main.cpp(2315): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+Main.cpp(2545): warning C4244: return: преобразование "unsigned __int64" в "int", возможна потеря данных
+Main.cpp(2568): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+Main.cpp(2672): warning C4305: инициализация: усечение из "__int64" к "int"
+Main.cpp(2672): warning C4309: инициализация: усечение константного значения
+  Создание кода
+  2 of 1130 functions ( 0.2%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    29 functions had inline decision re-evaluated but remain unchanged
+  Создание кода завершено
+  LS_Search.vcxproj -> D:\Files_Stepa\GDRive\Work\LS_Search\x64\Release\LS_Search.exe

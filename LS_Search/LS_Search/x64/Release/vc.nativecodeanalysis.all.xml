@@ -1,0 +1,166 @@
+﻿<?xml version="1.0" encoding="utf-8"?><DEFECTS><DEFECT>
+    <SFA>
+      <FILEPATH>d:\files_stepa\gdrive\work\ls_search\ls_search\minisat\core\</FILEPATH>
+      <FILENAME>solvertypes.h</FILENAME>
+      <LINE>97</LINE>
+      <COLUMN>88</COLUMN>
+    </SFA>
+    <DEFECTCODE>6290</DEFECTCODE>
+    <DESCRIPTION>Битовая операция с логическим результатом:  ! имеет более высокий приоритет, чем &amp;.  Следует использовать &amp;&amp; или (!(x &amp; y)).</DESCRIPTION>
+    <FUNCTION>Minisat::lbool::==</FUNCTION>
+    <DECORATED>??8lbool@Minisat@@QEBA_NV01@@Z</DECORATED>
+    <FUNCLINE>97</FUNCLINE>
+    <PATH />
+  </DEFECT><DEFECT>
+    <SFA>
+      <FILEPATH>d:\files_stepa\gdrive\work\ls_search\ls_search\</FILEPATH>
+      <FILENAME>main.cpp</FILENAME>
+      <LINE>750</LINE>
+      <COLUMN>10</COLUMN>
+    </SFA>
+    <DEFECTCODE>6246</DEFECTCODE>
+    <DESCRIPTION>Локальное объявление "i" скрывает объявление того же имени во внешней области. Дополнительные сведения см. в предыдущем объявлении в строке "748" файла "d:\files_stepa\gdrive\work\ls_search\ls_search\main.cpp".</DESCRIPTION>
+    <FUNCTION>initTrans</FUNCTION>
+    <DECORATED>?initTrans@@YA_NAEAV?$vector@V?$vector@HV?$allocator@H@std@@@std@@V?$allocator@V?$vector@HV?$allocator@H@std@@@std@@@2@@std@@AEAV?$vector@HV?$allocator@H@std@@@2@AEAV?$vector@_NV?$allocator@_N@std@@@2@2@Z</DECORATED>
+    <FUNCLINE>747</FUNCLINE>
+    <PATH>
+      <SFA>
+        <FILEPATH>d:\files_stepa\gdrive\work\ls_search\ls_search\</FILEPATH>
+        <FILENAME>main.cpp</FILENAME>
+        <LINE>748</LINE>
+        <COLUMN>7</COLUMN>
+      </SFA>
+    </PATH>
+  </DEFECT><DEFECT>
+    <SFA>
+      <FILEPATH>d:\files_stepa\gdrive\work\ls_search\ls_search\minisat\mtl\</FILEPATH>
+      <FILENAME>vec.h</FILENAME>
+      <LINE>100</LINE>
+      <COLUMN>53</COLUMN>
+    </SFA>
+    <DEFECTCODE>6308</DEFECTCODE>
+    <DESCRIPTION>realloc может возвратить пустой указатель: присвоение пустого указателя переменной "data", которая передается в качестве аргумента функции realloc, приведет к утечке исходного блока памяти.</DESCRIPTION>
+    <FUNCTION>Minisat::vec&lt;Minisat::Option *&gt;::capacity</FUNCTION>
+    <DECORATED>?capacity@?$vec@PEAVOption@Minisat@@@Minisat@@QEAAXH@Z</DECORATED>
+    <FUNCLINE>97</FUNCLINE>
+    <PATH />
+  </DEFECT><DEFECT>
+    <SFA>
+      <FILEPATH>d:\files_stepa\gdrive\work\ls_search\ls_search\minisat\core\</FILEPATH>
+      <FILENAME>solver.cc</FILENAME>
+      <LINE>274</LINE>
+      <COLUMN>12</COLUMN>
+    </SFA>
+    <DEFECTCODE>6282</DEFECTCODE>
+    <DESCRIPTION>Неверный оператор:  присвоение константы в контексте типа Boolean. Попробуйте вместо этого использовать "==".</DESCRIPTION>
+    <FUNCTION>Minisat::Solver::addClause_</FUNCTION>
+    <DECORATED>?addClause_@Solver@Minisat@@QEAA_NAEAV?$vec@ULit@Minisat@@@2@@Z</DECORATED>
+    <FUNCLINE>257</FUNCLINE>
+    <PATH />
+  </DEFECT><DEFECT>
+    <SFA>
+      <FILEPATH>d:\files_stepa\gdrive\work\ls_search\ls_search\minisat\core\</FILEPATH>
+      <FILENAME>solver.cc</FILENAME>
+      <LINE>493</LINE>
+      <COLUMN>11</COLUMN>
+    </SFA>
+    <DEFECTCODE>6246</DEFECTCODE>
+    <DESCRIPTION>Локальное объявление "i" скрывает объявление того же имени во внешней области. Дополнительные сведения см. в предыдущем объявлении в строке "451" файла "d:\files_stepa\gdrive\work\ls_search\ls_search\minisat\core\solver.cc".</DESCRIPTION>
+    <FUNCTION>Minisat::Solver::analyze</FUNCTION>
+    <DECORATED>?analyze@Solver@Minisat@@IEAAXIAEAV?$vec@ULit@Minisat@@@2@AEAH@Z</DECORATED>
+    <FUNCLINE>409</FUNCLINE>
+    <PATH>
+      <SFA>
+        <FILEPATH>d:\files_stepa\gdrive\work\ls_search\ls_search\minisat\core\</FILEPATH>
+        <FILENAME>solver.cc</FILENAME>
+        <LINE>451</LINE>
+        <COLUMN>6</COLUMN>
+      </SFA>
+    </PATH>
+  </DEFECT><DEFECT>
+    <SFA>
+      <FILEPATH>d:\files_stepa\gdrive\work\ls_search\ls_search\minisat\core\</FILEPATH>
+      <FILENAME>solver.cc</FILENAME>
+      <LINE>497</LINE>
+      <COLUMN>6</COLUMN>
+    </SFA>
+    <DEFECTCODE>6246</DEFECTCODE>
+    <DESCRIPTION>Локальное объявление "p" скрывает объявление того же имени во внешней области. Дополнительные сведения см. в предыдущем объявлении в строке "412" файла "d:\files_stepa\gdrive\work\ls_search\ls_search\minisat\core\solver.cc".</DESCRIPTION>
+    <FUNCTION>Minisat::Solver::analyze</FUNCTION>
+    <DECORATED>?analyze@Solver@Minisat@@IEAAXIAEAV?$vec@ULit@Minisat@@@2@AEAH@Z</DECORATED>
+    <FUNCLINE>409</FUNCLINE>
+    <PATH>
+      <SFA>
+        <FILEPATH>d:\files_stepa\gdrive\work\ls_search\ls_search\minisat\core\</FILEPATH>
+        <FILENAME>solver.cc</FILENAME>
+        <LINE>412</LINE>
+        <COLUMN>7</COLUMN>
+      </SFA>
+    </PATH>
+  </DEFECT><DEFECT>
+    <SFA>
+      <FILEPATH>d:\files_stepa\gdrive\work\ls_search\ls_search\minisat\core\</FILEPATH>
+      <FILENAME>solver.cc</FILENAME>
+      <LINE>503</LINE>
+      <COLUMN>10</COLUMN>
+    </SFA>
+    <DEFECTCODE>6246</DEFECTCODE>
+    <DESCRIPTION>Локальное объявление "j" скрывает объявление того же имени во внешней области. Дополнительные сведения см. в предыдущем объявлении в строке "451" файла "d:\files_stepa\gdrive\work\ls_search\ls_search\minisat\core\solver.cc".</DESCRIPTION>
+    <FUNCTION>Minisat::Solver::analyze</FUNCTION>
+    <DECORATED>?analyze@Solver@Minisat@@IEAAXIAEAV?$vec@ULit@Minisat@@@2@AEAH@Z</DECORATED>
+    <FUNCLINE>409</FUNCLINE>
+    <PATH>
+      <SFA>
+        <FILEPATH>d:\files_stepa\gdrive\work\ls_search\ls_search\minisat\core\</FILEPATH>
+        <FILENAME>solver.cc</FILENAME>
+        <LINE>451</LINE>
+        <COLUMN>9</COLUMN>
+      </SFA>
+    </PATH>
+  </DEFECT><DEFECT>
+    <SFA>
+      <FILEPATH>d:\files_stepa\gdrive\work\ls_search\ls_search\minisat\core\</FILEPATH>
+      <FILENAME>solver.cc</FILENAME>
+      <LINE>518</LINE>
+      <COLUMN>7</COLUMN>
+    </SFA>
+    <DEFECTCODE>6246</DEFECTCODE>
+    <DESCRIPTION>Локальное объявление "p" скрывает объявление того же имени во внешней области. Дополнительные сведения см. в предыдущем объявлении в строке "509" файла "d:\files_stepa\gdrive\work\ls_search\ls_search\minisat\core\solver.cc".</DESCRIPTION>
+    <FUNCTION>Minisat::Solver::litRedundant</FUNCTION>
+    <DECORATED>?litRedundant@Solver@Minisat@@IEAA_NULit@2@I@Z</DECORATED>
+    <FUNCLINE>509</FUNCLINE>
+    <PATH>
+      <SFA>
+        <FILEPATH>d:\files_stepa\gdrive\work\ls_search\ls_search\minisat\core\</FILEPATH>
+        <FILENAME>solver.cc</FILENAME>
+        <LINE>509</LINE>
+        <COLUMN>31</COLUMN>
+      </SFA>
+    </PATH>
+  </DEFECT><DEFECT>
+    <SFA>
+      <FILEPATH>d:\files_stepa\gdrive\work\ls_search\ls_search\minisat\core\</FILEPATH>
+      <FILENAME>solver.cc</FILENAME>
+      <LINE>744</LINE>
+      <COLUMN>12</COLUMN>
+    </SFA>
+    <DEFECTCODE>6282</DEFECTCODE>
+    <DESCRIPTION>Неверный оператор:  присвоение константы в контексте типа Boolean. Попробуйте вместо этого использовать "==".</DESCRIPTION>
+    <FUNCTION>Minisat::Solver::simplify</FUNCTION>
+    <DECORATED>?simplify@Solver@Minisat@@QEAA_NXZ</DECORATED>
+    <FUNCLINE>739</FUNCLINE>
+    <PATH />
+  </DEFECT><DEFECT>
+    <SFA>
+      <FILEPATH>d:\files_stepa\gdrive\work\ls_search\ls_search\minisat\core\</FILEPATH>
+      <FILENAME>solver.cc</FILENAME>
+      <LINE>1174</LINE>
+      <COLUMN>8</COLUMN>
+    </SFA>
+    <DEFECTCODE>6340</DEFECTCODE>
+    <DESCRIPTION>Несоответствие при подписи: "unsigned int" передан в качестве параметра _Param_(2), хотя при вызове "printf" требуется некоторый тип "signed".</DESCRIPTION>
+    <FUNCTION>Minisat::Solver::garbageCollect</FUNCTION>
+    <DECORATED>?garbageCollect@Solver@Minisat@@UEAAXXZ</DECORATED>
+    <FUNCLINE>1166</FUNCLINE>
+    <PATH />
+  </DEFECT></DEFECTS>

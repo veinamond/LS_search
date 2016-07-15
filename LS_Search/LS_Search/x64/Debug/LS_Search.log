@@ -1,0 +1,39 @@
+﻿  Main.cpp
+d:\files_stepa\gdrive\work\ls_search\ls_search\minisat\core\solvertypes.h(97): warning C4800: int: принудительно задано логическое значение "true" или "false" (предупреждение о производительности)
+d:\files_stepa\gdrive\work\ls_search\ls_search\minisat\core\solvertypes.h(130): warning C4200: нестандартное расширение: массив нулевого размера в структуре (объединении)
+  d:\files_stepa\gdrive\work\ls_search\ls_search\minisat\core\solvertypes.h(130): note: Невозможно создать конструктор копии или оператор присвоения копии, когда UDT содержит массив нулевого размера
+d:\files_stepa\gdrive\work\ls_search\ls_search\minisat\core\solver.h(343): warning C4244: +=: преобразование "double" в "float", возможна потеря данных
+d:\files_stepa\gdrive\work\ls_search\ls_search\minisat\core\solver.h(346): warning C4305: *=: усечение из "double" к "float"
+d:\files_stepa\gdrive\work\ls_search\ls_search\main.cpp(358): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+d:\files_stepa\gdrive\work\ls_search\ls_search\main.cpp(763): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+d:\files_stepa\gdrive\work\ls_search\ls_search\main.cpp(825): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+d:\files_stepa\gdrive\work\ls_search\ls_search\main.cpp(950): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+d:\files_stepa\gdrive\work\ls_search\ls_search\main.cpp(1011): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+d:\files_stepa\gdrive\work\ls_search\ls_search\main.cpp(1064): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+d:\files_stepa\gdrive\work\ls_search\ls_search\main.cpp(1097): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+d:\files_stepa\gdrive\work\ls_search\ls_search\main.cpp(1181): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+d:\files_stepa\gdrive\work\ls_search\ls_search\main.cpp(1695): warning C4267: аргумент: преобразование из "size_t" в "int"; возможна потеря данных
+d:\files_stepa\gdrive\work\ls_search\ls_search\main.cpp(1922): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+d:\files_stepa\gdrive\work\ls_search\ls_search\main.cpp(2004): warning C4267: =: преобразование из "size_t" в "int"; возможна потеря данных
+d:\files_stepa\gdrive\work\ls_search\ls_search\main.cpp(2008): warning C4267: аргумент: преобразование из "size_t" в "int"; возможна потеря данных
+d:\files_stepa\gdrive\work\ls_search\ls_search\main.cpp(2012): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+d:\files_stepa\gdrive\work\ls_search\ls_search\main.cpp(2128): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+d:\files_stepa\gdrive\work\ls_search\ls_search\main.cpp(2640): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+d:\files_stepa\gdrive\work\ls_search\ls_search\main.cpp(2668): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+d:\files_stepa\gdrive\work\ls_search\ls_search\main.cpp(2770): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+d:\files_stepa\gdrive\work\ls_search\ls_search\main.cpp(3000): warning C4244: return: преобразование "unsigned __int64" в "int", возможна потеря данных
+d:\files_stepa\gdrive\work\ls_search\ls_search\main.cpp(3023): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+d:\files_stepa\gdrive\work\ls_search\ls_search\main.cpp(3130): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+d:\files_stepa\gdrive\work\ls_search\ls_search\main.cpp(3158): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+d:\files_stepa\gdrive\work\ls_search\ls_search\main.cpp(3188): warning C4267: аргумент: преобразование из "size_t" в "unsigned int"; возможна потеря данных
+d:\files_stepa\gdrive\work\ls_search\ls_search\main.cpp(3241): warning C4267: аргумент: преобразование из "size_t" в "unsigned int"; возможна потеря данных
+d:\files_stepa\gdrive\work\ls_search\ls_search\main.cpp(3266): warning C4267: аргумент: преобразование из "size_t" в "unsigned int"; возможна потеря данных
+d:\files_stepa\gdrive\work\ls_search\ls_search\main.cpp(3315): warning C4267: аргумент: преобразование из "size_t" в "unsigned int"; возможна потеря данных
+d:\files_stepa\gdrive\work\ls_search\ls_search\main.cpp(3340): warning C4267: аргумент: преобразование из "size_t" в "unsigned int"; возможна потеря данных
+d:\files_stepa\gdrive\work\ls_search\ls_search\main.cpp(3364): warning C4267: аргумент: преобразование из "size_t" в "unsigned int"; возможна потеря данных
+d:\files_stepa\gdrive\work\ls_search\ls_search\main.cpp(3614): warning C4267: =: преобразование из "size_t" в "int"; возможна потеря данных
+d:\files_stepa\gdrive\work\ls_search\ls_search\main.cpp(3760): warning C4244: аргумент: преобразование "uint64_t" в "unsigned int", возможна потеря данных
+d:\files_stepa\gdrive\work\ls_search\ls_search\main.cpp(3784): warning C4267: аргумент: преобразование из "size_t" в "unsigned int"; возможна потеря данных
+d:\files_stepa\gdrive\work\ls_search\ls_search\main.cpp(3785): warning C4267: =: преобразование из "size_t" в "int"; возможна потеря данных
+d:\files_stepa\gdrive\work\ls_search\ls_search\main.cpp(3800): warning C4267: =: преобразование из "size_t" в "int"; возможна потеря данных
+  LS_Search.vcxproj -> D:\Files_Stepa\GDRive\Work\LS_Search\x64\Debug\LS_Search.exe
