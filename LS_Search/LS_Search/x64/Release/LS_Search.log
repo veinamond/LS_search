@@ -4,41 +4,30 @@ D:\Files_Stepa\GDRive\Work\LS_Search\LS_Search\minisat\core/SolverTypes.h(130): 
   D:\Files_Stepa\GDRive\Work\LS_Search\LS_Search\minisat\core/SolverTypes.h(130): note: Невозможно создать конструктор копии или оператор присвоения копии, когда UDT содержит массив нулевого размера
 D:\Files_Stepa\GDRive\Work\LS_Search\LS_Search\minisat\core/Solver.h(343): warning C4244: +=: преобразование "double" в "float", возможна потеря данных
 D:\Files_Stepa\GDRive\Work\LS_Search\LS_Search\minisat\core/Solver.h(346): warning C4305: *=: усечение из "double" к "float"
-Main.cpp(358): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
-Main.cpp(763): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
-Main.cpp(825): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
-Main.cpp(950): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
-Main.cpp(1011): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
-Main.cpp(1064): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
-Main.cpp(1097): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
-Main.cpp(1181): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
-Main.cpp(1699): warning C4267: аргумент: преобразование из "size_t" в "int"; возможна потеря данных
-Main.cpp(1926): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
-Main.cpp(2008): warning C4267: =: преобразование из "size_t" в "int"; возможна потеря данных
-Main.cpp(2012): warning C4267: аргумент: преобразование из "size_t" в "int"; возможна потеря данных
-Main.cpp(2016): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
-Main.cpp(2132): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
-Main.cpp(2932): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
-Main.cpp(2960): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
-Main.cpp(3062): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
-Main.cpp(3292): warning C4244: return: преобразование "unsigned __int64" в "int", возможна потеря данных
-Main.cpp(3315): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
-Main.cpp(3422): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
-Main.cpp(3450): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
-Main.cpp(3480): warning C4267: аргумент: преобразование из "size_t" в "unsigned int"; возможна потеря данных
-Main.cpp(3533): warning C4267: аргумент: преобразование из "size_t" в "unsigned int"; возможна потеря данных
-Main.cpp(3558): warning C4267: аргумент: преобразование из "size_t" в "unsigned int"; возможна потеря данных
-Main.cpp(3607): warning C4267: аргумент: преобразование из "size_t" в "unsigned int"; возможна потеря данных
-Main.cpp(3632): warning C4267: аргумент: преобразование из "size_t" в "unsigned int"; возможна потеря данных
-Main.cpp(3656): warning C4267: аргумент: преобразование из "size_t" в "unsigned int"; возможна потеря данных
-Main.cpp(3906): warning C4267: =: преобразование из "size_t" в "int"; возможна потеря данных
-Main.cpp(4052): warning C4244: аргумент: преобразование "uint64_t" в "unsigned int", возможна потеря данных
-Main.cpp(4076): warning C4267: аргумент: преобразование из "size_t" в "unsigned int"; возможна потеря данных
-Main.cpp(4077): warning C4267: =: преобразование из "size_t" в "int"; возможна потеря данных
-Main.cpp(4092): warning C4267: =: преобразование из "size_t" в "int"; возможна потеря данных
+Main.cpp(220): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+Main.cpp(625): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+Main.cpp(687): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+Main.cpp(812): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+Main.cpp(873): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+Main.cpp(926): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+Main.cpp(959): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+Main.cpp(1319): warning C4267: аргумент: преобразование из "size_t" в "int"; возможна потеря данных
+Main.cpp(2105): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+Main.cpp(2122): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+Main.cpp(2150): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+Main.cpp(2180): warning C4267: аргумент: преобразование из "size_t" в "unsigned int"; возможна потеря данных
+Main.cpp(2233): warning C4267: аргумент: преобразование из "size_t" в "unsigned int"; возможна потеря данных
+Main.cpp(2258): warning C4267: аргумент: преобразование из "size_t" в "unsigned int"; возможна потеря данных
+Main.cpp(2307): warning C4267: аргумент: преобразование из "size_t" в "unsigned int"; возможна потеря данных
+Main.cpp(2332): warning C4267: аргумент: преобразование из "size_t" в "unsigned int"; возможна потеря данных
+Main.cpp(2356): warning C4267: аргумент: преобразование из "size_t" в "unsigned int"; возможна потеря данных
+Main.cpp(2628): warning C4244: аргумент: преобразование "uint64_t" в "unsigned int", возможна потеря данных
+Main.cpp(2652): warning C4267: аргумент: преобразование из "size_t" в "unsigned int"; возможна потеря данных
+Main.cpp(2653): warning C4267: =: преобразование из "size_t" в "int"; возможна потеря данных
+Main.cpp(2668): warning C4267: =: преобразование из "size_t" в "int"; возможна потеря данных
   Создание кода
-  119 of 1485 functions ( 8.0%) were compiled, the rest were copied from previous compilation.
+  306 of 1490 functions (20.5%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
-    38 functions had inline decision re-evaluated but remain unchanged
+    217 functions had inline decision re-evaluated but remain unchanged
   Создание кода завершено
   LS_Search.vcxproj -> D:\Files_Stepa\GDRive\Work\LS_Search\x64\Release\LS_Search.exe

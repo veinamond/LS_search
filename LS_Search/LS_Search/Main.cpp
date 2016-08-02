@@ -82,146 +82,6 @@ void EO(vector<int> vars, vector<vector<int>> & E) {
 	}
 }
 
-
-vector<vector<int>> new_tv_encoding(int n) {
-	vector<vector<int>> Encoding;
-	vector<vector<vector<int>>> LS_vars(n, vector<vector<int>>(n, vector<int>(n)));
-	int cnt = 0;
-	for (int i = 0; i < n; i++) {
-		for (int j = 0; j < n; j++) {
-			for (int k = 0; k < n; k++) {
-				LS_vars[i][j][k] = ++cnt;
-			}
-		}
-	}
-	vector<vector<vector<int>>> TV_masks(n, vector<vector<int>>(n, vector<int>(n)));
-	for (int i = 0; i < n; i++) {
-		for (int j = 0; j < n; j++) {
-			for (int k = 0; k < n; k++) {
-				TV_masks[i][j][k] = ++cnt;
-			}
-		}
-	}
-	vector<vector<vector<int>>> TV_values(n, vector<vector<int>>(n, vector<int>(n)));
-	for (int i = 0; i < n; i++) {
-		for (int j = 0; j < n; j++) {
-			for (int k = 0; k < n; k++) {
-				TV_values[i][j][k] = ++cnt;
-			}
-		}
-	}
-
-	//encoding LS conditions
-	for (int i = 0; i < n; i++) {
-		for (int j = 0; j < n; j++) {
-			EO(LS_vars[i][j], Encoding);
-		}
-	}
-
-	for (int i = 0; i < n; i++) {
-		for (int j = 0; j < n; j++) {
-			vector<int> tmp;
-			for (int k = 0; k < n; k++) {
-				tmp.push_back(LS_vars[k][i][j]);
-			}
-			EO(tmp, Encoding);
-		}
-	}
-
-	for (int i = 0; i < n; i++) {
-		for (int j = 0; j < n; j++) {
-			vector<int> tmp;
-			for (int k = 0; k < n; k++) {
-				tmp.push_back(LS_vars[i][k][j]);
-			}
-			EO(tmp, Encoding);
-		}
-	}
-
-	//encoding TV_masks conditions
-	for (int i = 0; i < n; i++) {
-		for (int j = 0; j < n; j++) {
-			EO(TV_masks[i][j], Encoding);
-		}
-	}
-
-	for (int i = 0; i < n; i++) {
-		for (int j = 0; j < n; j++) {
-			vector<int> tmp;
-			for (int k = 0; k < n; k++) {
-				tmp.push_back(TV_masks[k][i][j]);
-			}
-			EO(tmp, Encoding);
-		}
-	}
-
-	for (int i = 0; i < n; i++) {
-		for (int j = 0; j < n; j++) {
-			vector<int> tmp;
-			for (int k = 0; k < n; k++) {
-				tmp.push_back(TV_masks[i][k][j]);
-			}
-			EO(tmp, Encoding);
-		}
-	}
-
-	//encoding constraints on TV_values
-	//encoding TV_masks conditions
-	for (int i = 0; i < n; i++) {
-		for (int j = 0; j < n; j++) {
-			EO(TV_values[i][j], Encoding);
-		}
-	}
-
-	for (int i = 0; i < n; i++) {
-		for (int j = 0; j < n; j++) {
-			vector<int> tmp;
-			for (int k = 0; k < n; k++) {
-				tmp.push_back(TV_values[k][i][j]);
-			}
-			EO(tmp, Encoding);
-		}
-	}
-
-	for (int i = 0; i < n; i++) {
-		for (int j = 0; j < n; j++) {
-			vector<int> tmp;
-			for (int k = 0; k < n; k++) {
-				tmp.push_back(TV_values[i][k][j]);
-			}
-			EO(tmp, Encoding);
-		}
-	}
-
-
-	//connection between everything
-	for (int k = 0; k < n; k++) {//transversals
-		for (int u = 0; u < n; u++) {
-			for (int v = 0; v < n; v++) {
-				//TV_values==v
-				vector<int> tmp(n);
-				for (int l = 0; l < n; l++) {
-					tmp[l] = ++cnt;
-					var_eq_and(tmp[l], LS_vars[u][l][v], TV_masks[k][u][l], Encoding);
-				}
-				var_eq_or(TV_values[k][u][v], tmp, Encoding);
-			}
-		}
-	}
-
-	ofstream out;
-	string cnf_out = "D:\\LSTests\\tv_new_" + inttostr(n) + ".cnf";
-	out.open(cnf_out);
-	for (int i = 0; i < Encoding.size(); i++) {
-		for (int j = 0; j < Encoding[i].size(); j++) {
-			out << Encoding[i][j] << " ";
-		}
-		out << "0\n";
-	}
-	out.close();
-	return Encoding;
-}
-
 vector<vector<int>> construct_cf(vector<vector<int>>&SQ, bool &acc) {
 	// initialize
 	vector<vector<vector<int>>> sources(4, vector<vector<int>>(10, vector<int>(10)));
@@ -297,6 +157,8 @@ vector<vector<int>> construct_cf_limited(vector<vector<int>>&SQ, bool &acc) {
 	acc = false;
 	return KF;
 }
+
+
 
 
 
@@ -1175,118 +1037,6 @@ vector<vector<int>> getTrans_mod(vector<vector<int>> a, bool diag) {
 	return res;
 }
 
-int indexof(vector<vector<int>> & TVSET, vector<int> & tv) {
-	bool found = false;
-	int res = -1;
-	int dim = TVSET.size() / 2;
-	int k = dim;
-	//cout <<"Searching for:"<< endl;
-	//printvector(tv);
-	//cout <<endl;
-	while ((k >= 0) && (found == false)) {
-		if (dim < 3) {
-			for (int j = k - 4; j <= k + 4; j++) {
-				//	printvector(TVSET[j]);
-				//	cout << endl;
-				if (TVSET[j] == tv) {
-					found = true;
-					res = j;
-					return j;
-				}
-			}
-			if (found == false) {
-				cout << "FAIL" << endl;
-			}
-		}
-		else {
-			int r = dim % 2;
-			dim = dim / 2;
-			if (tv > TVSET[k]) {
-				k = k + dim - r;
-			}
-			else {
-				k = k - dim + r;
-			}
-		}
-	}
-	return res;
-}
-
-vector<int> getTrans_mod_ind(vector<vector<int>> &a, vector<vector<int>> &TVSET, bool diag) {
-	vector<int> h(10);
-	vector<bool> co(10);
-	vector<bool> x(10);
-	vector<int> res(5600);
-	int num = 0;
-	//bool t = initTrans(a, h, co, x);
-	bool t = initTrans(a, h, co, x);
-	if (t == true) {
-		bool acc = true;
-		if (diag == true) {
-			int md = 0;
-			int ad = 0;
-			for (int l = 0; l < h.size(); l++) {
-				if (h[l] == l) { md++; }
-				if (h[l] == h.size() - l - 1) { ad++; }
-			}
-			if ((md != 1) || (ad != 1)) { acc = false; }
-		}
-		if (acc == true) {
-			res[num] = indexof(TVSET, h);
-			num++;
-		}
-
-		//	while (nextTrans(a, h, co, x) == true) {
-		while (nextTrans_ext(a, h, co, x, diag) == true) {
-			res[num] = indexof(TVSET, h);
-			num++;
-		}
-	}
-	res.resize(num);
-	return res;
-}
-
-vector<int> getTrans_mod_ind_tv(vector<int> &tvind, vector<vector<int>> &TVSET, vector<vector<int>> &TVSET_SQUARE, bool diag) {
-	vector<int> h(10);
-	vector<bool> co(10);
-	vector<bool> x(10);
-	vector<int> res(5600);
-	int num = 0;
-	vector<vector<int>> a(10, vector<int>(10));
-	construct_square_from_tv(TVSET_SQUARE, tvind, a);
-
-	//bool t = initTrans(a, h, co, x);
-	bool t = initTrans(a, h, co, x);
-	if (t == true) {
-		bool acc = true;
-		if (diag == true) {
-			int md = 0;
-			int ad = 0;
-			for (int l = 0; l < h.size(); l++) {
-				if (h[l] == l) { md++; }
-				if (h[l] == h.size() - l - 1) { ad++; }
-			}
-			if ((md != 1) || (ad != 1)) { acc = false; }
-		}
-		if (acc == true) {
-			res[num] = indexof(TVSET, h);
-			num++;
-		}
-
-		//	while (nextTrans(a, h, co, x) == true) {
-		while (nextTrans_ext(a, h, co, x, diag) == true) {
-			res[num] = indexof(TVSET, h);
-			num++;
-		}
-	}
-	res.resize(num);
-	return res;
-}
-
-
-
-
-
 void getTrans(vector<vector<int>> a, bool diag, vector<vector<int>> &tr, vector<int> &ltr, vector<int> &hb) {
 	int i;
 	int j;
@@ -1447,136 +1197,6 @@ label2:
 	goto label1;
 }
 
-void read_pairs_from_file(string filename, vector<vector<vector<int>>> &Squares) {
-	ifstream in;
-	in.open(filename);
-	vector<int> a;
-	string s;
-	while (in.good()) {
-		getline(in, s);
-		if (s.length()>2) {
-			int k = 0;
-			bool b = true;
-			while (b == true) {
-				if (s[k] != ' ') {
-					string t = s.substr(k, 1);
-					int r = strtoi(t);
-					a.push_back(r);
-				}
-				k++;
-				if (k == s.length()) { b = false; }
-			}
-		}
-	}
-	in.close();
-
-	for (int t = 0; t < (a.size()) / 200; t++) {
-		vector<vector<int>> LS1;
-		vector<vector<int>> LS2;
-		for (int i = 0; i < 10; i++) {
-			vector<int> tmp1;
-			vector<int> tmp2;
-			for (int j = 0; j < 10; j++) {
-				tmp1.push_back(a[t * 200 + i * 20 + j]);
-
-				tmp2.push_back(a[t * 200 + i * 20 + 10 + j]);
-			}
-			LS1.push_back(tmp1);
-			LS2.push_back(tmp2);
-		}
-		Squares.push_back(LS1);
-		Squares.push_back(LS2);
-		/*cout << "LS1" << endl;
-		for (int u = 0; u < 10; u++) {
-		for (int v = 0; v < 10; v++) {
-		cout << LS1[u][v] << " ";
-		}
-		cout << endl;
-		}
-
-		cout << "LS2" << endl;
-		for (int u = 0; u < 10; u++) {
-		for (int v = 0; v < 10; v++) {
-		cout << LS2[u][v] << " ";
-		}
-		cout << endl;
-		}
-		*/
-	}
-	/*
-	for (int i = 0; i < Squares.size(); i++) {
-	string fn = "D:\\LSTests\\LSD10_square" + inttostr(i);
-	ofstream out;
-	out.open(fn);
-	for (int u = 0; u < 10; u++) {
-	for (int v = 0; v < 10; v++) {
-	out << Squares[i][u][v] << " ";
-	}
-	out << "\n";
-	}
-	out.close();
-	}
-	*/
-}
-
-void read_squares_from_file(string filename, vector<vector<vector<int>>> &Squares) {
-	ifstream in;
-	in.open(filename);
-	vector<int> a;
-	string s;
-	while (in.good()) {
-		getline(in, s);
-		if (s.length()>2) {
-			int k = 0;
-			bool b = true;
-			while (b == true) {
-				if (s[k] != ' ') {
-					string t = s.substr(k, 1);
-					int r = strtoi(t);
-					a.push_back(r);
-				}
-				k++;
-				if (k == s.length()) { b = false; }
-			}
-		}
-	}
-	in.close();
-
-	for (int t = 0; t < (a.size()) / 100; t++) {
-		vector<vector<int>> LS1;
-		for (int i = 0; i < 10; i++) {
-			vector<int> tmp1;
-			for (int j = 0; j < 10; j++) {
-				tmp1.push_back(a[t * 100 + i * 10 + j]);
-			}
-			LS1.push_back(tmp1);
-
-		}
-		Squares.push_back(LS1);
-		/*cout << "LS1" << endl;
-		for (int u = 0; u < 10; u++) {
-		for (int v = 0; v < 10; v++) {
-		cout << LS1[u][v] << " ";
-		}
-		cout << endl;
-		}
-		*/
-	}
-	/*
-	for (int i = 0; i < Squares.size(); i++) {
-	string fn = "D:\\LSTests\\LSD10_square" + inttostr(i);
-	ofstream out;
-	out.open(fn);
-	for (int u = 0; u < 10; u++) {
-	for (int v = 0; v < 10; v++) {
-	out << Squares[i][u][v] << " ";
-	}
-	out << "\n";
-	}
-	out.close();
-	}
-	*/
-}
 
 
 void check_belyaev(vector<vector<int>> SQ, bool diag, string filename) {
@@ -1723,117 +1343,34 @@ void check_dlx_rc1(vector<vector<int>> SQ, bool diag, string filename) {
 			out << endl;
 		}
 		out << "Found " << tvr.size() << "sets of disjoint transversals" << endl;
-		out << "(DLX_OLD)Total: " << trm.size() << " transversals" << endl;
+		out << "(DLX_refresh)Total: " << trm.size() << " transversals" << endl;
 
 		for (int i = 0; i < tvr.size(); i++) {
 			for (int j = 0; j < tvr[i].size(); j++) {
 				out << tvr[i][j] << " ";
 			}
 			out << endl;
+
+			vector<vector<int>> ort_SQ(SQ.size(), vector<int>(SQ.size()));
+			for (auto u = 0; u < SQ.size(); u++) {
+				for (auto v = 0; v < SQ.size(); v++) {
+					ort_SQ[v][trm[tvr[i][u]][v]] = u;
+				}
+			}
+
+			for (auto u = 0; u < SQ.size(); u++) {
+				for (auto v = 0; v < SQ.size(); v++) {
+					out << ort_SQ[u][v] << " ";
+				}
+				out << endl;
+			}			
+			out << endl;
 		}
+
 	}
 	out.close();
 }
 
-
-void clear_links_DLX(DLX_column *&root, vector<DLX_column*> &columns) {
-	for (int i = 0; i < columns.size(); i++) {
-		DLX_column * ct = columns[i];
-		ct->Down = ct;
-		ct->Up = ct;
-		ct->size = 0;
-	}
-}
-
-void configure_DLX(DLX_column *&root, vector<DLX_column*>& columns, vector<vector<DLX_column*>> &rows, vector<int> &tvind) {
-	clear_links_DLX(root, columns);
-	for (int i = 0; i < tvind.size(); i++) {
-		vector<DLX_column*> cur_row = rows[tvind[i]];
-		for (int j = 0; j < cur_row.size(); j++) {
-			DLX_column* ctve = cur_row[j];
-			ctve->Column->size++;
-			ctve->Down = ctve->Column;
-			ctve->Up = ctve->Column->Up;
-			ctve->Up->Down = ctve;
-			ctve->Down->Up = ctve;
-		}
-	}
-}
-
-void restore_DLX(DLX_column *&root, vector<DLX_column*> &columns, vector<vector<DLX_column*>> &rows) {
-	for (int i = 0; i < rows.size(); i++) {
-		vector<DLX_column*> cur_row = rows[i];
-		for (int j = 0; j < cur_row.size(); j++) {
-			DLX_column* ctve = cur_row[j];
-			ctve->Column->size++;
-			ctve->Down = ctve->Column;
-			ctve->Up = ctve->Column->Up;
-			ctve->Up->Down = ctve;
-			ctve->Down->Up = ctve;
-		}
-	}
-}
-
-
-
-
-void check_dlx_EXT(int index, TRT *&r, vector<int> &TVind, vector<vector<int>>& TVSET, vector<vector<int>>& TVset_SQUARE, DLX_column *&root, vector<DLX_column*>& columns, vector<vector<DLX_column*>>&rows, bool diag, string filename) {
-
-
-	//vector<int> trm;
-	//vector<int> tm(10);
-	//TV_check_TRT_mod(r->firstchild, TVset_SQUARE, TVind, trm, tm);
-
-
-	vector<vector<int>> SQ(10, vector<int>(10));
-	construct_square_from_tv(TVset_SQUARE, TVind, SQ);
-	//bool t = false;
-	//SQ = construct_cf_limited(SQ, t);	
-	//BACKTRACK
-
-	vector<int> trm;
-	vector<int> tmp(10);
-	TV_check_TRT(r->firstchild, SQ, trm, tmp);
-	//= getTrans_mod_ind_tv(TVind, TVSET, TVset_SQUARE, diag);
-	//configure_DLX(root, columns, rows, trm);
-
-	configure_DLX(root, columns, rows, trm);
-
-	vector<DLX_column*> ps;
-	ps.clear();
-	vector<vector<int>> tvr;
-
-	search(0, *root, ps, tvr);
-	for (int i = 0; i < tvr.size(); i++) {
-		sort(tvr[i].begin(), tvr[i].end());
-	}
-
-	if (tvr.size()>0) {
-		cout << "LS with orthogonal mates found \n";
-		ofstream out;
-		out.open(filename, ios::app);
-		out << "Square " << index << endl;
-		//vector<vector<int>> SQ(10, vector<int>(10));
-		//construct_square_from_tv(TVset_SQUARE, TVind, SQ);
-		for (int i = 0; i < SQ.size(); i++) {
-			for (int j = 0; j < SQ.size(); j++) {
-				out << SQ[i][j] << " ";
-			}
-			out << endl;
-		}
-		out << "(DLX_new)Total: " << trm.size() << " transversals" << endl;
-		out << "Found " << tvr.size() << "sets of disjoint transversals" << endl;
-		for (int i = 0; i < tvr.size(); i++) {
-			for (int j = 0; j < tvr[i].size(); j++) {
-				out << tvr[i][j] << " ";
-			}
-			out << endl;
-		}
-		out.close();
-	}
-
-
-}
 
 void check_squares_Belyaev(vector<vector<vector<int>>> Squares, bool diag, string logfilename) {
 	ofstream out;
@@ -1860,90 +1397,6 @@ void check_squares_DLX(vector<vector<vector<int>>> Squares, bool diag, string lo
 	out.open(logfilename, ios::app);
 	out << "(DLX_old)Total time required to process the set is " << t_end - t_start << " seconds" << endl;
 	out.close();
-}
-
-
-void check_squares_DLX_EXT_tv(TRT*& r, vector<vector<int>> & tvinds, vector<vector<int>>& TVSET, vector<vector<int>>& TVSET_SQUARE, DLX_column *&root, vector<DLX_column*>& columns, vector<vector<DLX_column*>>&rows, bool diag, string logfilename) {
-	ofstream out;
-	double t_start = cpuTime();
-
-	for (int i = 0; i < tvinds.size(); i++) {
-		if ((i > 0) && (i % 1000 == 0)) { cout << "Checked " << i << " squares" << endl; }
-		//	out.open(logfilename, ios::app);
-		//	out << endl << "Square " << i << endl;
-		//	out.close();
-		check_dlx_EXT(i, r, tvinds[i], TVSET, TVSET_SQUARE, root, columns, rows, diag, logfilename);
-	}
-	double t_end = cpuTime();
-	out.open(logfilename, ios::app);
-	out << "(DLX_new)Total time required to process the set is " << t_end - t_start << " seconds" << endl;
-	out.close();
-}
-
-void free_dlx(vector<DLX_column*> &elements) {
-	for (int i = 0; i < elements.size(); i++) {
-		elements[i]->Column = NULL;
-		elements[i]->Up = NULL;
-		elements[i]->Down = NULL;
-		elements[i]->Left = NULL;
-		elements[i]->Right = NULL;
-		DLX_column *t = elements[i];
-		delete t;
-	}
-	elements.clear();
-}
-
-
-void generate_permutations_masked(int n, vector<vector<int>> &perm, vector<vector<int>> mask_LS, bool diag) {
-	vector<vector<int>> MTV(10, vector<int>(10));
-	for (int i = 0; i < n; i++) {
-		for (int j = 0; j < n; j++) {
-			MTV[i][j] = -1;
-		}
-	}
-	for (int i = 0; i < n; i++) {
-		for (int j = 0; j < n; j++) {
-			if (mask_LS[i][j] != -1) {
-				MTV[mask_LS[i][j]][i] = j;
-			}
-		}
-	}
-	//here we need to make rearrangements if mask is split in several parts.
-	//if it starts at the beginning as is single block then its fine.
-	vector<int> ml;
-	for (int i = 0; i < n; i++) {
-		vector<int> seed_i;
-		vector<bool> l(n);
-		for (int j = 0; j < n; j++) {
-			l[j] = false;
-		}
-		for (int j = 0; j < n; j++) {
-			if (MTV[i][j] != -1) {
-				seed_i.push_back(MTV[i][j]);
-				l[MTV[i][j]] = true;
-			}
-		}
-		int k = seed_i.size();
-		for (int j = 0; j < n; j++) {
-			if (l[j] == false) { seed_i.push_back(j); }
-		}
-
-		do {
-			bool acc = true;
-			if (diag == true) {
-				int md = 0;
-				int ad = 0;
-				for (int j = 0; j < n; j++) {
-					if (seed_i[j] == j) { md++; }
-					if (seed_i[j] == n - j - 1) { ad++; }
-				}
-				if ((md != 1) || (ad != 1)) { acc = false; }
-			}
-			if (acc == true) { perm.push_back(seed_i); }
-		} while (std::next_permutation(seed_i.begin() + k, seed_i.end()));
-
-	}
-	cout << "Generated " << perm.size() << "permutations" << endl;
 }
 
 
@@ -1981,230 +1434,6 @@ void generate_permutations_masked_rc1(int n, vector<vector<int>> &perm, vector<v
 	perm = res;
 }
 
-
-
-void generate_permutations_blocks(int n, vector<vector<char>> &perm, vector<int> &bs, bool diag) {
-	//bs = blockstart indexes 
-	vector<char> seed;
-	for (int i = 0; i < n; i++) {
-		seed.push_back(i);
-		bs.push_back(-1);
-	}
-
-	do {
-		bool acc = true;
-		if (diag == true) {
-			int md = 0;
-			int ad = 0;
-			for (int j = 0; j < n; j++) {
-				if (seed[j] == j) { md++; }
-				if (seed[j] == n - j - 1) { ad++; }
-			}
-			if ((md != 1) || (ad != 1)) { acc = false; }
-		}
-		if (acc == true) {
-			perm.push_back(seed);
-			if (bs[seed[0]] == -1) {
-				bs[seed[0]] = perm.size() - 1;
-			}
-		}
-	} while (std::next_permutation(seed.begin(), seed.end()));
-	bs.push_back(perm.size() - 1);
-	//	cout << "Generated " << perm.size() << "permutations" << endl;
-}
-void SEARCH_TO_DLX(DLX_column &root, vector<vector<char>> & tvset, vector<DLX_column*> & elements) {
-	int dimension = tvset[0].size() / 2;
-	root.Up = NULL;
-	root.Down = NULL;
-	root.Column = NULL;
-	root.row_id = -1;
-	root.size = -1;
-	//	root.column_number= -1;
-	elements.push_back(&root);
-	vector<DLX_column *> columns;
-	DLX_column * lastleft = &root;
-	for (int i = 0; i < 3 * dimension* dimension; i++) {
-		DLX_column *ct;
-		ct = new (DLX_column);
-		//	ct->column_number = i;
-		ct->Down = ct;
-		ct->Up = ct;
-		ct->size = 0;
-		ct->row_id = 0;
-		ct->Column = ct;
-		ct->Left = lastleft;
-		lastleft->Right = ct;
-		lastleft = ct;
-		columns.push_back(ct);
-		elements.push_back(ct);
-	}
-	lastleft->Right = &root;
-	root.Left = lastleft;
-
-	for (int i = 0; i < tvset.size(); i++) {
-		vector<char> curtv = tvset[i];
-		vector<DLX_column *> tvrow;
-		//tv set
-		for (int j = 0; j < dimension; j++) {
-			DLX_column *ctve;
-			ctve = new (DLX_column);
-			//column corresponds to characteristic vector of LS or smth of that kind
-			int k = j*dimension + curtv[j];
-
-			ctve->Column = columns[k];
-			ctve->Column->size++;
-			ctve->Down = columns[k];
-			ctve->Up = columns[k]->Up;
-			ctve->Up->Down = ctve;
-			ctve->Down->Up = ctve;
-			ctve->row_id = i;
-			//	ctve->column_number = k;
-			ctve->size = -10;
-			elements.push_back(ctve);
-			tvrow.push_back(ctve);
-		}
-		//ls_row
-		for (int j = 0; j < dimension; j++) {
-			DLX_column *ctve;
-			ctve = new (DLX_column);
-			//int e = curtv[dimension + j]; // value of tv element
-			//column number in which we puch 1 corresponding to this value.
-			//for row it means that if we have e==k, then in first *dimension* columns the *1* will be in *k*-th
-			int k = dimension*dimension + j*dimension + curtv[dimension + j];
-			// for column? int k =2 * dimension*dimension* + curtv[j]*dimension + e;?
-			ctve->Column = columns[k];
-			ctve->Column->size++;
-			ctve->Down = columns[k];
-			ctve->Up = columns[k]->Up;
-			ctve->Up->Down = ctve;
-			ctve->Down->Up = ctve;
-			ctve->row_id = i;
-			//	ctve->column_number = k;
-			ctve->size = -10;
-			elements.push_back(ctve);
-			tvrow.push_back(ctve);
-		}
-		//ls_column
-		for (int j = 0; j < dimension; j++) {
-			DLX_column *ctve;
-			ctve = new (DLX_column);
-			//int e = curtv[dimension + j]; // value of tv element
-			//column number in which we puch 1 corresponding to this value.
-			//for row it means that if we have e==k, then in first *dimension* columns the *1* will be in *k*-th
-			int k = 2 * dimension*dimension + curtv[j] * dimension + curtv[dimension + j];
-			ctve->Column = columns[k];
-			ctve->Column->size++;
-			ctve->Down = columns[k];
-			ctve->Up = columns[k]->Up;
-			ctve->Up->Down = ctve;
-			ctve->Down->Up = ctve;
-			ctve->row_id = i;
-			//	ctve->column_number = k;
-			ctve->size = -10;
-			elements.push_back(ctve);
-			tvrow.push_back(ctve);
-		}
-		for (int j = 0; j < tvrow.size() - 1; j++) {
-			tvrow[j]->Right = tvrow[j + 1];
-			tvrow[j]->Right->Left = tvrow[j];
-		}
-		tvrow[tvrow.size() - 1]->Right = tvrow[0];
-		tvrow[0]->Left = tvrow[tvrow.size() - 1];
-	}
-	DLX_column *pr = &root;
-
-}
-
-
-
-
-
-void Generate_DLS_masked(int n, bool diag, unsigned long long  limit, string logname, vector<vector<int>>mask) {
-	vector<vector<int>> perm_diag;
-	generate_permutations_masked(n, perm_diag, mask, diag);
-	sort(perm_diag.begin(), perm_diag.end());
-
-	DLX_column *root;
-	root = new (DLX_column);
-	vector<DLX_column*> elements;
-	TVSET_TO_DLX(*root, perm_diag, elements);
-
-	int size_big = sizeof(elements) + elements.size() * sizeof(elements[0]);
-	cout << "The size of elements vector is " << size_big << endl;
-
-	vector<DLX_column*> ps;
-	ps.clear();
-	vector<vector<int>> tvr;
-	bool cont = true;
-	double t1 = cpuTime();
-	unsigned long long count = 0;
-	bool count_only = true;
-	search_limited(0, *root, ps, tvr, cont, limit, count_only, count);
-	double t2 = cpuTime();
-
-	cout << tvr.size() << " squares generated in " << t2 - t1 << " seconds" << endl;
-	//vector<vector<int>>> SQUARES(10, vector<int>(10));	
-
-	vector<vector<int>> pm;
-	generate_permutations(n, pm, diag);
-	sort(pm.begin(), pm.end());
-
-	DLX_column *root_pm;
-	root_pm = new (DLX_column);
-	vector<DLX_column*> columns;
-	vector<vector<DLX_column*>> rows;
-	TVSET_TO_DLX_EXT(*root_pm, pm, columns, rows);
-
-	TRT *r10;
-	r10 = new(TRT);
-	construct_TR_tree(pm, r10, diag);
-
-	double sc_t1 = cpuTime();
-	vector<vector<vector<int>>> SQUARES(tvr.size(), vector<vector<int>>(n, vector<int>(n)));
-	construct_squares_from_tv_set(perm_diag, tvr, SQUARES);
-
-	/*
-	//temp
-	for (int i = 0; i < SQUARES.size(); i++) {
-	cout << "SQUARE " << i << "\n";
-	for (int u = 0; u < SQUARES[i].size(); u++) {
-	for (int v = 0;  v<SQUARES[i][u].size(); v++) {
-	cout << SQUARES[i][u][v] << " ";
-	}
-	cout << endl;
-	}
-
-
-	}
-	//temp
-
-	double sc_t2 = cpuTime();
-
-	cout << "Construction of all LS from transversals took " << sc_t2 - sc_t1 << " seconds\n";
-	cout << "Number of squares before filtration " << SQUARES.size() << "\n";
-	double sc_cf_t1 = cpuTime();
-	vector<vector<int>> SQ;
-	vector<vector<vector<int>>> F_sq;
-	for (int i = 0; i < SQUARES.size(); i++) {
-	bool t = false;
-	SQ = construct_cf_limited(SQUARES[i], t);
-	if (t == true) {
-	F_sq.push_back(SQUARES[i]);
-	}		//BACKTRACK
-	}
-	double sc_cf_t2 = cpuTime();
-
-	cout << "Computing reduced canonical forms took " << sc_cf_t2 - sc_cf_t1 << " seconds,\n";
-	cout << "Number of squares after filtration " << F_sq.size() << "\n";
-
-	*/
-	double sc_check_t1 = cpuTime();
-	check_squares_DLX_EXT_tv(r10, tvr, pm, perm_diag, root_pm, columns, rows, diag, logname);
-	double sc_check_t2 = cpuTime();
-
-	cout << "Checking all squares took " << sc_check_t2 - sc_check_t1 << " seconds,\n";
-	//check_squares_DLX(SQUARES, true, logname);
-}
 
 vector<vector<int>> setcover_enc(int n, vector<int> &tv_ind, vector<vector<int>> TVSet, bool verbose) {
 	vector<vector<int>> Encoding(n*n,vector<int>(0));
@@ -2296,8 +1525,6 @@ vector<vector<int>> setcover_enc_rc1(int n, vector<vector<int>> &tvr, bool verbo
 	return Encoding;
 
 }
-
-
 
 
 vector<vector<int>> tv_search_enc(int n, vector<vector<int>> &SQ, bool verbose) {
@@ -2487,15 +1714,6 @@ void Generate_DLS_masked_compare(int n, bool diag, unsigned long long limit, str
 	vector<vector<vector<int>>> SQUARES(tvr.size(), vector<vector<int>>(n, vector<int>(n)));
 	construct_squares_from_tv_set(perm_diag, tvr, SQUARES);
 
-	
-	/*double alt_SAT_check0 = cpuTime();
-	for (int i = 0; i < SQUARES.size(); i++) {
-		check_SAT_alternative(n, SQUARES[i], r10, pm, logname);
-	}
-	double alt_SAT_check1 = cpuTime();
-	cout << "checking squares via alternative SAT finished\n";
-	*/
-	
 	//finding transversals using DLX
 	double DLXTVsearh_0 = cpuTime();
 	for (int i = 0; i < SQUARES.size(); i++) {
@@ -2505,6 +1723,7 @@ void Generate_DLS_masked_compare(int n, bool diag, unsigned long long limit, str
 	}
 	double DLXTVsearh_1 = cpuTime();
 	cout << "finding transversals using DLX took " << DLXTVsearh_1- DLXTVsearh_0<<endl;
+	
 	
 	
 	double SATTVsearh_0 = cpuTime();
@@ -2582,14 +1801,7 @@ void Generate_DLS_masked_compare(int n, bool diag, unsigned long long limit, str
 	double OLDDLX_check1_rc1 = cpuTime();
 	cout << "checking squares with DLX_refresh algorithm finished\n";
 	//checking squares with new DLX implementation
-
-
-	//check_dlx_rc1
-	double sc_check_t1 = cpuTime();
-	check_squares_DLX_EXT_tv(r10, tvr, pm, perm_diag, root_pm, columns, rows, diag, logname);
-	double sc_check_t2 = cpuTime();
-
-
+	
 
 	cout << "RESULTS\n";
 	cout << "finding transversals using DLX took " << DLXTVsearh_1 - DLXTVsearh_0 << endl;
@@ -2601,7 +1813,7 @@ void Generate_DLS_masked_compare(int n, bool diag, unsigned long long limit, str
 	cout << "Checking all SQUARES using Belyaev algorithm took " << Belyaev_check1 - Belyaev_check0 << " seconds\n";
 	cout << "Checking all SQUARES using old DLX algorithm took " << OLDDLX_check1 - OLDDLX_check0 << " seconds\n";
 	cout << "Checking all SQUARES using DLX refresh algorithm took " << OLDDLX_check1_rc1 - OLDDLX_check0_rc1 << " seconds\n";
-	cout << "Checking all SQUARES using new DLX algorithm took " << sc_check_t2 - sc_check_t1 << " seconds\n";
+	
 
 	ofstream out;
 	out.open(logname,ios::app);
@@ -2616,7 +1828,7 @@ void Generate_DLS_masked_compare(int n, bool diag, unsigned long long limit, str
 	out << "Checking all SQUARES using Belyaev algorithm took " << Belyaev_check1 - Belyaev_check0 << " seconds\n";
 	out << "Checking all SQUARES using old DLX algorithm took " << OLDDLX_check1 - OLDDLX_check0 << " seconds\n";
 	out << "Checking all SQUARES using DLX refresh algorithm took " << OLDDLX_check1_rc1 - OLDDLX_check0_rc1 << " seconds\n";
-	out << "Checking all SQUARES using new DLX algorithm took " << sc_check_t2 - sc_check_t1 << " seconds\n";
+	
 	out.close();
 
 	//cout << "Checking all squares took " << sc_check_t2 - sc_check_t1 << " seconds,\n";
@@ -2733,86 +1945,7 @@ void Generate_DLS_masked_crosscheck(int n, bool diag, unsigned long long limit, 
 			cout << "Processed " << i << " squares\n";
 		}
 	}
-	/*
-//checking squares with belyev algorithm
-	double Belyaev_check0 = cpuTime();
-	for (int i = 0; i < SQUARES.size(); i++) {
-		check_belyaev(SQUARES[i], diag, logname);
-	}
-	double Belyaev_check1 = cpuTime();
-	cout << "checking squares with belayev algorithm finished\n";
-	//checking squares with old DLX implementation
-
-
-
-	double SAT_check0_rc1 = cpuTime();
-	for (int i = 0; i < SQUARES.size(); i++) {
-		check_SAT_rc1(n, SQUARES[i], logname);
-	}
-	double SAT_check1_rc1 = cpuTime();
-	cout << "checking squares via SAT rc1 finished\n";
-
-
-
-	double OLDDLX_check0 = cpuTime();
-	for (int i = 0; i < SQUARES.size(); i++) {
-		check_dlx(SQUARES[i], diag, logname);
-	}
-	double OLDDLX_check1 = cpuTime();
-	cout << "checking squares with old DLX algorithm finished\n";
-	//checking squares with new DLX implementation
-
-
-
-	double OLDDLX_check0_rc1 = cpuTime();
-	for (int i = 0; i < SQUARES.size(); i++) {
-		check_dlx_rc1(SQUARES[i], diag, logname);
-	}
-	double OLDDLX_check1_rc1 = cpuTime();
-	cout << "checking squares with DLX_refresh algorithm finished\n";
-	//checking squares with new DLX implementation
-
-
-	//check_dlx_rc1
-	double sc_check_t1 = cpuTime();
-	check_squares_DLX_EXT_tv(r10, tvr, pm, perm_diag, root_pm, columns, rows, diag, logname);
-	double sc_check_t2 = cpuTime();
-
-
-
-	cout << "RESULTS\n";
-	cout << "finding transversals using DLX took " << DLXTVsearh_1 - DLXTVsearh_0 << endl;
-	cout << "finding transversals using SAT took " << SATTVsearh_1 - SATTVsearh_0 << endl;
-	cout << "Finding transversals using Belyaev algorithm took " << BTVsearh_1 - BTVsearh_0 << " seconds\n";
-	cout << "Finding transversals using TRT algorithm took " << TRTTVsearh_1 - TRTTVsearh_0 << " seconds\n";
-	cout << "Checking all SQUARES using SAT took " << SAT_check1 - SAT_check0 << " seconds\n";
-	cout << "Checking all SQUARES using SAT +DLX took " << SAT_check1_rc1 - SAT_check0_rc1 << " seconds\n";
-	cout << "Checking all SQUARES using Belyaev algorithm took " << Belyaev_check1 - Belyaev_check0 << " seconds\n";
-	cout << "Checking all SQUARES using old DLX algorithm took " << OLDDLX_check1 - OLDDLX_check0 << " seconds\n";
-	cout << "Checking all SQUARES using DLX refresh algorithm took " << OLDDLX_check1_rc1 - OLDDLX_check0_rc1 << " seconds\n";
-	cout << "Checking all SQUARES using new DLX algorithm took " << sc_check_t2 - sc_check_t1 << " seconds\n";
-
-	ofstream out;
-	out.open("D:\\LSTests\\Compare_res.log");
-	out << "RESULTS\n";
-	out << tvr.size() << " squares generated in " << t2 - t1 << " seconds" << endl;
-	out << "finding transversals using DLX took " << DLXTVsearh_1 - DLXTVsearh_0 << endl;
-	out << "finding transversals using SAT took " << SATTVsearh_1 - SATTVsearh_0 << endl;
-	out << "Finding transversals using Belyaev algorithm took " << BTVsearh_1 - BTVsearh_0 << " seconds\n";
-	out << "Finding transversals using TRT algorithm took " << TRTTVsearh_1 - TRTTVsearh_0 << " seconds\n";
-	out << "Checking all SQUARES using SAT took " << SAT_check1 - SAT_check0 << " seconds\n";
-	out << "Checking all SQUARES using SAT +DLX took " << SAT_check1_rc1 - SAT_check0_rc1 << " seconds\n";
-	out << "Checking all SQUARES using Belyaev algorithm took " << Belyaev_check1 - Belyaev_check0 << " seconds\n";
-	out << "Checking all SQUARES using old DLX algorithm took " << OLDDLX_check1 - OLDDLX_check0 << " seconds\n";
-	out << "Checking all SQUARES using DLX refresh algorithm took " << OLDDLX_check1_rc1 - OLDDLX_check0_rc1 << " seconds\n";
-	out << "Checking all SQUARES using new DLX algorithm took " << sc_check_t2 - sc_check_t1 << " seconds\n";
-	out.close();
-	*/
-	//cout << "Checking all squares took " << sc_check_t2 - sc_check_t1 << " seconds,\n";
-	//check_squares_DLX(SQUARES, true, logname);
 }
-
-
 
 
 uint64_t Generate_DLS_masked_nocheck(int n, bool diag, unsigned long long limit, bool count_only, bool verbosity, string logname, vector<vector<int>>mask, vector<vector<vector<int>>> &SQUARES) {
@@ -2919,67 +2052,6 @@ void Generate_DLS_masked_DLXrefresh(int n, bool diag, unsigned long long limit, 
 	//check_squares_DLX(SQUARES, true, logname);
 }
 
-void Generate_DLS(int dimension, unsigned long long limit, string logname) {
-	int n = dimension;
-	vector<vector<int>> perm_diag;
-	generate_permutations(n, perm_diag, true);
-
-	DLX_column *root;
-	root = new (DLX_column);
-	vector<DLX_column*> elements;
-	TVSET_TO_DLX(*root, perm_diag, elements);
-
-	int size_big = sizeof(elements) + elements.size() * sizeof(elements[0]);
-	cout << "The size of elements vector is " << size_big << endl;
-
-	vector<DLX_column*> ps;
-	ps.clear();
-	vector<vector<int>> tvr;
-	bool cont = true;
-	double t1 = cpuTime();
-	unsigned long long count = 0;
-	bool count_only = true;
-	search_limited(0, *root, ps, tvr, cont, limit, count_only, count);
-	double t2 = cpuTime();
-	cout << limit << " squares generated in " << t2 - t1 << " seconds" << endl;
-	//vector<vector<int>>> SQUARES(10, vector<int>(10));	
-	vector<vector<vector<int>>> SQUARES;
-	for (int i = 0; i < tvr.size(); i++) {
-		(dimension, vector<int>(dimension));
-		vector<vector<int>> SQ(dimension, vector<int>(dimension));
-		SQUARES.push_back(SQ);
-	}
-
-	construct_squares_from_tv_set(perm_diag, tvr, SQUARES);
-	check_squares_DLX(SQUARES, true, logname);
-
-}
-void filter_TV(vector<vector<int>> &TVSET, vector<vector<int>> &LS_mask) {
-	cout << "Size before filtering " << TVSET.size() << endl;
-	vector<vector<int>> TVSET_new;
-	int n = TVSET[0].size();
-
-	for (int i = 0; i < TVSET.size(); i++) {
-		vector<int> tmp(10);
-		bool a = true;
-		for (int u = 0; u < n; u++) {
-			if (LS_mask[u][TVSET[i][u]] >= 0) {
-				tmp[LS_mask[u][TVSET[i][u]]]++;
-				if (tmp[LS_mask[u][TVSET[i][u]]]>1) {
-					a = false;
-					TVSET_new.push_back(TVSET[i]);
-					break;
-				}
-			}
-		}
-	}
-	TVSET = TVSET_new;
-	cout << "Size after filtering " << TVSET_new.size() << endl;
-}
-
-//new code
-
-
 
 
 
@@ -2995,302 +2067,7 @@ void print_sq(vector<vector<int>> &SQ) {
 	}
 }
 
-vector<vector<int>> loadcnffromfile(int &nvars, string filename) {
-	vector<vector<int>> res;
-	int n = 0;
-	ifstream myfile;
-	bool r = false;
-	myfile.open(filename);
-	string s;
-	while (myfile.good()) {
-		getline(myfile, s);
-		if ((s[0] == 'p') || (s[0] == 'c')) {
-			//skip
-		}
-		else {
-			vector<int> res_i;
-			int k = 0;
-			for (int t = 0; t < s.length(); t++) {
-				if (s[t] == ' ') {
-					string tmp = s.substr(k, t - k);
-					int a = strtoi(tmp);
-					if (abs(a) > n) {
-						n = abs(a);
-					}
-					if (a != 0) {
-						res_i.push_back(a);
-					}
-					k = t;
-				}
-			}
-			if (res_i.size() != 0) {
-				res.push_back(res_i);
-			}
-		}
-	}
-	myfile.close();
-	nvars = n;
-	return res;
-}
 
-vector<int> basic_filter(vector<vector<int>> &pm, vector<int> &ind, vector<int> & fil) {
-	vector<int> res;
-	for (int i = 0; i < ind.size(); i++) {
-		bool acc = true;
-		for (int j = 0; j < fil.size(); j++) {
-			if (fil[j] == pm[ind[i]][j]) { acc = false;  break; }
-		}
-		if (acc == true) res.push_back(ind[i]);
-	}
-	return res;
-}
-
-unsigned __int64 count_LS(vector<vector<int>> &pm, vector<int> &ind, vector<vector<int>> & PLS, int depth) {
-	if (ind.size() == 0) return 0;
-	vector<int> res;
-	vector<int> filter_on = PLS[PLS.size() - 1];
-
-	vector<int> filter_res1 = basic_filter(pm, ind, filter_on);
-	vector<int> md(PLS[0].size());
-	vector<int> ad(PLS[0].size());
-
-	//let only diagonal remain
-	for (int i = 0; i < PLS.size(); i++) {
-		md[PLS[i][i]]++;
-		ad[PLS[i][PLS[0].size() - i - 1]]++;
-	}
-	int k = PLS.size();
-
-	for (int i = 0; i < filter_res1.size(); i++) {
-		vector<int> tmp = pm[filter_res1[i]];
-		//	for (int j = 0; j < tmp.size(); j++) {
-		//	cout << tmp[j] << " ";
-		//}
-		//		cout << "MD: " << tmp[k] << ", AD: " << tmp[PLS[0].size() - k - 1] << endl;
-
-		if ((md[tmp[k]] == 0) && (ad[tmp[PLS[0].size() - k - 1]] == 0)) {
-
-			res.push_back(i);
-		}
-	}
-	unsigned __int64 sum = 0;
-	if (depth > 0) {
-
-		for (int i = 0; i < res.size(); i++) {
-			if ((i>0) && (i % 100 == 0)) {
-				cout << "Depth " << depth << ", processed " << i << " out of " << res.size() << " variants, current sum " << sum << "\n";
-			}
-			PLS.push_back(pm[res[i]]);
-			sum += count_LS(pm, filter_res1, PLS, depth - 1);
-			PLS.pop_back();
-		}
-	}
-	else {
-		sum = res.size();
-	}
-	return sum;
-}
-
-void inc_ii(int &ii, int &i, int &j, int &dimension, vector<vector<int>> &SQ, vector<vector<int>> &R, vector<vector<int>>&C) {
-	if (i == dimension) {
-		i = dimension - 1;
-		j = dimension - 1;
-		R[i][SQ[i][j]]--;
-		C[j][SQ[i][j]]--;
-		ii = SQ[i][j];
-	}
-	ii++;
-	while (ii >= dimension) {
-		if (j > 0) {
-			j--;
-			ii = SQ[i][j];
-			R[i][ii]--;
-			C[j][ii]--;
-			ii++;
-		}
-		else {
-			i--;
-			j = dimension - 1;
-			ii = SQ[i][j];
-			R[i][ii]--;
-			C[j][ii]--;
-			ii++;
-		}
-	}
-}
-
-void gen_LS(int dimension, bool count_only) {
-	vector<vector<vector<int>>> res;
-	vector<vector<int>> SQ(dimension, vector<int>(dimension));
-	vector<vector<int>> ROWS(dimension, vector<int>(dimension));
-	vector<vector<int>> COLUMNS(dimension, vector<int>(dimension));
-	int d = dimension;
-
-	for (int l = 0; l < dimension; l++) {
-		SQ[0][l] = l;
-		ROWS[0][l]++;
-		COLUMNS[l][l]++;
-	}
-	int cnt = 0;
-	int i = 1;
-	int j = 0;
-	int ii = 0;
-	while (i > 0) {
-		if (i == dimension) {
-			cnt++;
-			res.push_back(SQ);
-			cout << "SQUARE # " << cnt - 1 << "\n";
-			for (int u = 0; u < dimension; u++) {
-				for (int v = 0; v < dimension; v++) {
-					cout << SQ[u][v] << " ";
-				}
-				cout << "\n";
-			}
-			inc_ii(ii, i, j, dimension, SQ, ROWS, COLUMNS);
-
-		}
-
-		if ((ROWS[i][ii] == 0) && (COLUMNS[j][ii] == 0)) {
-			SQ[i][j] = ii;
-			ROWS[i][ii]++;
-			COLUMNS[j][ii]++;
-			if (j < dimension - 1) {
-				j++;
-			}
-			else
-			{
-				i++;
-				j = 0;
-			}
-			ii = 0;
-		}
-		else {
-			inc_ii(ii, i, j, dimension, SQ, ROWS, COLUMNS);
-		}
-
-	}
-
-}
-
-
-void inc_ii_D(int &ii, int &i, int &j, int &dimension, vector<vector<int>> &SQ, vector<vector<int>> &R, vector<vector<int>>&C, vector<int> &AD, vector<int> &MD) {
-	if (i == dimension) {
-		i = dimension - 1;
-		j = dimension - 1;
-		R[i][SQ[i][j]]--;
-		C[j][SQ[i][j]]--;
-		MD[SQ[i][j]]--;
-		ii = SQ[i][j];
-	}
-	ii++;
-	while (ii >= dimension) {
-		if (j > 0) {
-			j--;
-			ii = SQ[i][j];
-			R[i][ii]--;
-			C[j][ii]--;
-			if (i == j) { MD[SQ[i][j]]--; }
-			if (j == dimension - i - 1) { AD[SQ[i][j]]--; }
-			ii++;
-		}
-		else {
-			i--;
-			j = dimension - 1;
-			ii = SQ[i][j];
-			R[i][ii]--;
-			C[j][ii]--;
-			if (i == j) { MD[SQ[i][j]]--; }
-			if (j == dimension - i - 1) { AD[SQ[i][j]]--; }
-			ii++;
-		}
-	}
-}
-
-
-int gen_LSD(int dimension, bool count_only, bool verbosity) {
-	vector<vector<vector<int>>> res;
-	vector<vector<int>> SQ(dimension, vector<int>(dimension));
-	vector<vector<int>> ROWS(dimension, vector<int>(dimension));
-	vector<vector<int>> COLUMNS(dimension, vector<int>(dimension));
-	vector<int> MD(dimension);
-	vector<int> AD(dimension);
-	int d = dimension;
-
-	for (int l = 0; l < dimension; l++) {
-		SQ[0][l] = l;
-		ROWS[0][l]++;
-		COLUMNS[l][l]++;
-	}
-	MD[0]++;
-	AD[d - 1]++;
-	int cnt = 0;
-	int i = 1;
-	int j = 0;
-	int ii = 0;
-	while (i > 0) {
-		if (i == dimension) {
-			cnt++;
-			if (count_only == false) {
-				res.push_back(SQ);
-			}
-			if (verbosity == true) {
-				cout << "SQUARE # " << cnt - 1 << "\n";
-				for (int u = 0; u < dimension; u++) {
-					for (int v = 0; v < dimension; v++) {
-						cout << SQ[u][v] << " ";
-					}
-					cout << "\n";
-				}
-			}
-			inc_ii_D(ii, i, j, dimension, SQ, ROWS, COLUMNS, AD, MD);
-
-		}
-		bool MDE = (i != j) || ((i == j) && (MD[ii] == 0));
-		bool ADE = (j != d - i - 1) || ((j == d - i - 1) && (AD[ii] == 0));
-
-
-		if ((ROWS[i][ii] == 0) && (COLUMNS[j][ii] == 0) && MDE && ADE) {
-			SQ[i][j] = ii;
-			ROWS[i][ii]++;
-			COLUMNS[j][ii]++;
-			if (i == j) { MD[SQ[i][j]]++; }
-			if (j == d - i - 1) { AD[SQ[i][j]]++; }
-
-			if (j < dimension - 1) {
-				j++;
-			}
-			else
-			{
-				i++;
-				j = 0;
-			}
-			ii = 0;
-		}
-		else {
-			inc_ii_D(ii, i, j, dimension, SQ, ROWS, COLUMNS, AD, MD);
-		}
-
-	}
-	return cnt;
-}
-
-
-int count_PLS(int dimension, int n_of_rows) {
-	vector<vector<int>> perm;
-	generate_permutations(dimension, perm, false);
-
-	vector<vector<int>> cur_PLS(1, vector<int>(dimension));
-	vector<int> first_row;
-	for (int i = 0; i < dimension; i++) first_row.push_back(i);
-	cur_PLS[0] = first_row;
-
-	vector<int> ind(perm.size());
-	for (int i = 0; i < perm.size(); i++) { ind[i] = i; }
-
-	unsigned __int64 r = count_LS(perm, ind, cur_PLS, n_of_rows - 1);
-	//	cout << "counted " << r << " variants\n";
-	return r;
-}
 
 vector<vector<int>> compute_masked_LS(vector<vector<int>> &LS, vector<vector<int>> &MASK) {
 	vector<vector<int>> res(LS);
@@ -3319,96 +2096,6 @@ vector<vector<int>> compute_masked_LS(vector<vector<int>> &LS, int k) {
 	return res;
 }
 
-
-
-void ineq_char(int v, vector<int> lp, vector<int> rp1, vector<int> rp2, vector<vector<int>> & E) {
-	for (int i = 0; i < rp1.size(); i++) {
-		var_eq_and(lp[i], -rp1[i], -rp2[i], E);
-	}
-	var_eq_or(v, lp, E);
-}
-
-vector<vector<int>> tv_find_sat_enc(int n, bool diag) {
-	vector<vector<int>> Encoding;
-	vector<vector<int>> pm;
-	generate_permutations(n, pm, diag);
-	int cnt_vars = 1;
-	vector<int> tv_vars(pm.size());
-	for (int i = 0; i < pm.size(); i++) {
-		tv_vars[i] = cnt_vars++;
-	}
-	vector<vector<vector<int>>> ls_vars(n, vector<vector<int>>(n, vector<int>(n)));
-	
-	for (int i = 0; i < n; i++) {
-		for (int j = 0; j < n; j++) {
-			for (int k = 0; k < n; k++){
-				ls_vars[i][j][k]=cnt_vars++;
-			}
-		}
-	}
-	int m = n*n;
-	vector<vector<int>> aux_vars(m, vector<int>(m));
-	for (int i = 0; i < m; i++) {
-		for (int j = i+1; j < m; j++) {
-			aux_vars[i][j] = cnt_vars++;
-		}
-	}
-
-	for (int i = 0; i < n*n; i++) {
-		for (int j = i+1; j < n*n; j++) {
-				vector<int> t;
-				for (int u = 0; u < n; u++) {
-					t.push_back(cnt_vars++);
-				}				
-				ineq_char(aux_vars[i][j], t, ls_vars[i%n][i/n], ls_vars[j%n][j/n], Encoding);			
-		}
-	}
-
-	/*for (int i = 0; i < n; i++) {
-		for (int j = 0; j < n; j++) {
-			for (int i1 = i + 1; i1 < n; i1++) {
-				for (int j1 = 0; j1 < n; j1++) {
-					vector<int> t;
-					for (int u = 0; u < n; u++) {
-						t.push_back(cnt_vars++);
-					}
-					cout << i << " " << j << " " << i1 << " " << j1 << endl;
-					ineq_char(aux_vars[i*n + j][i1*n + j1], t, ls_vars[i][j], ls_vars[i1][j1],Encoding);
-				}
-			}
-		}
-	}*/
-
-	vector<vector<int>> tv_vects;
-
-	for (int i = 0; i < pm.size(); i++) {
-		vector<int> t;
-	//	printvector(pm[i]);
-		for (int j = 0; j < pm[i].size()-1;  j++) {
-			for (int k = j + 1; k < n;  k++) {
-				t.push_back(aux_vars[j*n + pm[i][j]][(k)*n + pm[i][k]]);
-				//cout << j*n + pm[i][j] << " " << " " << (k)*n + pm[i][k] << endl;
-			}
-		}
-		tv_vects.push_back(t);
-	}
-	for (int i = 0; i < tv_vars.size(); i++) {
-		var_eq_and(tv_vars[i], tv_vects[i], Encoding);
-	}
-	cout << Encoding.size() << endl;
-
-	string cnf_name = "D:\\LStests\\Test_tv_find" + inttostr(n) + ".cnf";
-	ofstream out;
-	out.open(cnf_name);
-	for (int i = 0; i < Encoding.size(); i++) {
-		for (int j = 0; j < Encoding[i].size(); j++) {
-			out << Encoding[i][j] << " ";
-		}
-		out << "0\n";
-	}
-	out.close();
-	return Encoding;
-}
 
 bool check3(vector<int> &r0, vector<int>&r1, vector<int> r2) {
 	/*cout << "Checking \n";
@@ -3776,9 +2463,6 @@ void bittwidling_count3_10() {
 	double t1 = cpuTime();
 
 	cout << "k = " << k << ". time spent = " << t1 - t0 << " seconds\n";
-
-
-
 }
 
 void tv10_to_int(vector<int> &tv, int row_num, bool diag, uint64_t &p1, uint64_t &p2) {
@@ -3793,17 +2477,6 @@ void tv10_to_int(vector<int> &tv, int row_num, bool diag, uint64_t &p1, uint64_t
 	if (diag == true) {
 		p2 |= (uint64_t)1 << (4 * 10 + tv[row_num]);
 		p2 |= (uint64_t)1 << (5 * 10 + tv[10 - row_num - 1]);
-	}
-}
-
-void tv10_to_int_4_6(vector<int> &tv, uint64_t &p1, uint64_t &p2) {
-	p1 = 0;
-	p2 = 0;
-	for (uint64_t j = 0; j < 4; j++) {
-		p1 |= (uint64_t)1 << (j * 10 + tv[j]);
-	}
-	for (uint64_t j = 4; j <10; j++) {
-		p2 |= (uint64_t)1 << ((j - 4) * 10 + tv[j]);
 	}
 }
 
@@ -3877,116 +2550,6 @@ void bittwidling_count3_10_rc1() {
 	cout << "Total number of 3 rows is " << cnt3 << ". time spent = " << dt3_e - dt3_s << " seconds\n";
 
 }
-
-
-
-void count_fill4(vector<vector<int>> r4) {
-	vector<vector<int>> pm;
-	generate_permutations(10, pm, true);
-	vector<uint64_t> p1(pm.size());
-	vector<uint64_t> p2(pm.size());
-	for (auto i = 0; i < pm.size(); i++) {
-		tv10_to_int_4_6(pm[i], p1[i], p2[i]);
-	}
-	vector<uint64_t> tvs(10);
-	for (auto i = 0; i < 4; i++) {
-		for (auto j = 0; j < 10; j++) {
-			tvs[r4[i][j]] |= 1ULL << ((i * 10) + j);
-		}
-	}
-
-	vector<uint64_t> wv;
-	vector<int> inds(11);
-	for (auto j = 0; j<10; j++) {
-		for (auto i = 0; i < p1.size(); i++) {
-			if (p1[i] == tvs[j]) {
-				wv.push_back(p2[i]);
-			}
-		}
-		inds[j + 1] = wv.size();
-	}
-
-	//debug
-	for (int i = 0; i < inds.size(); i++) {
-		cout << inds[i] << " ";
-	}
-	cout << endl;
-
-	uint64_t count = 0;
-	int d = 0;
-	vector<int> c_ind(10);
-	uint64_t c_s = 0;
-	// why dont i write 10-fold for ? rly
-	// as long as there is no recursion we are fine.
-
-	for (auto it1 = inds[0]; it1 < inds[1]; it1++) {
-		if ((c_s&wv[it1]) == 0) {
-			c_s |= wv[it1];
-			for (auto it2 = inds[1]; it2 < inds[2]; it2++) {
-				if ((c_s&wv[it2]) == 0) {
-					c_s |= wv[it2];
-					for (auto it3 = inds[2]; it3 < inds[3]; it3++) {
-						if ((c_s&wv[it3]) == 0) {
-							c_s |= wv[it3];
-							for (auto it4 = inds[3]; it4 < inds[4]; it4++) {
-								if ((c_s&wv[it4]) == 0) {
-									c_s |= wv[it4];
-									for (auto it5 = inds[4]; it5 < inds[5]; it5++) {
-										if ((c_s&wv[it5]) == 0) {
-											c_s |= wv[it5];
-											for (auto it6 = inds[5]; it6 < inds[6]; it6++) {
-												if ((c_s&wv[it6]) == 0) {
-													c_s |= wv[it6];
-													for (auto it7 = inds[6]; it7 < inds[7]; it7++) {
-														if ((c_s&wv[it7]) == 0) {
-															c_s |= wv[it7];
-															for (auto it8 = inds[7]; it8 < inds[8]; it8++) {
-																if ((c_s&wv[it8]) == 0) {
-																	c_s |= wv[it8];
-																	for (auto it9 = inds[8]; it9 < inds[9]; it9++) {
-																		if ((c_s&wv[it9]) == 0) {
-																			c_s |= wv[it9];
-																			for (auto it10 = inds[9]; it10 < inds[10]; it10++) {
-																				if ((c_s&wv[it10]) == 0) {
-																					count++;
-																					if (count % 1000000 == 0) {
-																						cout << count << endl;
-																					}
-																				}
-																			}
-																			c_s ^= wv[it9];
-																		}
-																	}
-																	c_s ^= wv[it8];
-																}
-															}
-															c_s ^= wv[it7];
-														}
-													}
-													c_s ^= wv[it6];
-												}
-											}
-											c_s ^= wv[it5];
-										}
-									}
-									c_s ^= wv[it4];
-								}
-							}
-							c_s ^= wv[it3];
-						}
-					}
-					c_s ^= wv[it2];
-				}
-			}
-			c_s ^= wv[it1];
-		}
-
-	}
-
-	cout << "Count = " << count << endl;
-
-}
-
 
 
 void bittwidling_count4_10_rnd(int k) {
@@ -4184,161 +2747,78 @@ void Test_rnd_rc4(int n, int n_of_squares) {
 }
 
 
+void loadsquaresfromfile(string filename, int n, vector<vector<vector<int>>> & SQUARES){
+	SQUARES.clear();
+	ifstream in;
+	in.open(filename);
+	string s;
+	while (in.good()) {
+		vector<vector<int>> cur_SQ;
+		for (auto i = 0; i < n;i++){
+				getline(in, s);
+				if (s != ""){
+					vector<int> tmp;
+					for (auto j = 0; j < n; j++) {
+						string t_s = s.substr(2 * j, 1);
+						tmp.push_back(strtoi(t_s));
+					}
+					cur_SQ.push_back(tmp);
+				}
+				else {
+					cur_SQ.clear();
+					i--;
+				}
+		}
+		SQUARES.push_back(cur_SQ);
+		
+
+		//debug
+		for (auto i = 0; i < cur_SQ.size(); i++) {
+			for (auto j = 0; j < cur_SQ[i].size(); j++) {
+				cout << cur_SQ[i][j] << " ";
+			}
+			cout << endl;
+		}
+		cout << endl;
+	}
+	in.close();
+}
+void process_squares_from_file(string filename, int n, string logname){
+	vector<vector<vector<int>>> S;
+	loadsquaresfromfile(filename, n, S);
+	ofstream out;
+	double OLDDLX_check0_rc1 = cpuTime();
+	for (int i = 0; i < S.size(); i++) {
+		out.open(logname, ios::app);
+		out << "Square " << i << "\n";
+		out.close();
+		check_dlx_rc1(S[i], true, logname);
+	}
+	double OLDDLX_check1_rc1 = cpuTime();
+	cout << "checking squares with DLX_refresh algorithm finished\n";
+	//estimate4_sample(10, 10000);
+
+}
+
 void main() {
-	//bittwidling_count4_10_rnd(100000);
-	//estimate4_sample(10, 1000);
+	//counting DLS_10^3
+	bittwidling_count3_10_rc1();
 
-//vector<vector<vector<int>>> SQM;
-//	generate_4r_rnd_rc1(10, 10, SQM);
-
-
-	vector<vector<int>> ax{
-		{ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 },
-		{ 2, 3, 4, 9, 8, 1, 0, 5, 6, 7 },
-		{ 3, 4, 9, 8, 2, 7, 1, 0, 5, 6 },
-		{ 8, 7, 6, 5, 0, 9, 4, 3, 2, 1 }
-	};
-	vector<vector<int>> bx{
-		{ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 },
-		{ 1, 2, 0, 4, 3, 7, 9, 8, 5, 6 },
-		{ 7, 3, 5, 9, 0, 4, 8, 6, 2, 1 },
-		{ 3, 5, 6, 8, 9, 0, 4, 1, 7, 2 }
-	};
-	//	count_fill4_rc1(a);
-	double d1 = cpuTime();
-//	count_fill4(ax);
-//	bittwidling_count3_10_rc1();
-//	double d2 = cpuTime();
-//	cout << "It took " << d2 - d1 << " seconds\n";
-//	bittwidling_count3_10();
-	//tv_find_sat_enc(10, true);
-	//new_tv_encoding(8);
-	//new_tv_encoding(9);
-	//new_tv_encoding(10);
-	vector<vector<int>> m_diag{
-		{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
-		{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
-		{ -1,-1, 1,-1,-1,-1,-1, 1,-1,-1 },
-		{ -1,-1,-1, 1,-1,-1, 1,-1,-1,-1 },
-		{ -1,-1,-1,-1, 1, 1,-1,-1,-1,-1 },
-		{ -1,-1,-1,-1, 1, 1,-1,-1,-1,-1 },
-		{ -1,-1,-1, 1,-1,-1, 1,-1,-1,-1 },
-		{ -1,-1, 1,-1,-1,-1,-1, 1,-1,-1 },
-		{ -1, 1,-1,-1,-1,-1,-1,-1, 1,-1 },
-		{ 1,-1,-1,-1,-1,-1,-1,-1,-1, 1 },
-	};
-
-	vector<vector<int>> a{
-		{ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 },
-		{ 2, 3, 4, 9, 8, 1, 0, 5, 6, 7 },
-		{ 3, 4, 9, 8, 2, 7, 1, 0, 5, 6 },
-		{ 8, 7, 6, 5, 0, 9, 4, 3, 2, 1 },
-		{ 5, 0, 1, 7, 6, 3, 2, 8, 9, 4 },
-		{ 6, 5, 0, 1, 7, 2, 8, 9, 4, 3 },
-		{ 4, 9, 8, 2, 3, 6, 7, 1, 0, 5 },
-		{ 7, 6, 5, 0, 1, 8, 9, 4, 3, 2 },
-		{ 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 },
-		{ 1, 2, 3, 4, 9, 0, 5, 6, 7, 8 }
-	};
-	vector<vector<int>> b{
-		{ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 },
-		{ 1, 2, 0, 4, 3, 7, 9, 8, 5, 6 },
-		{ 7, 3, 5, 9, 0, 4, 8, 6, 2, 1 },
-		{ 3, 5, 6, 8, 9, 0, 4, 1, 7, 2 },
-		{ 4, 9, 7, 2, 6, 8, 1, 5, 0, 3 },
-		{ 5, 8, 4, 6, 7, 1, 3, 2, 9, 0 },
-		{ 8, 4, 9, 1, 2, 3, 7, 0, 6, 5 },
-		{ 6, 7, 3, 0, 1, 2, 5, 9, 4, 8 },
-		{ 9, 0, 1, 5, 8, 6, 2, 4, 3, 7 },
-		{ 2, 6, 8, 7, 5, 9, 0, 3, 1, 4 }
-	};
-
-	estimate4_sample(10, 10000);
-
-	vector<vector<int>> pm;
-	vector<vector<int>> pm_diag;
-	generate_permutations(10, pm, false);
-	generate_permutations(10, pm_diag, true);
-
+	//estimating the number of DLS_10^4
+	bittwidling_count4_10_rnd(10000);
 	
-	vector<vector<int>> tvr_bel_diag = getTrans_mod(a, true);
+	//Estimating the number of Diagonal Latin Squares produced for fixed DLS_10^4
+	estimate4_sample(10,10000);
+		
 
-	vector<vector<int>> tvr_bel = getTrans_mod(a, false);
-
-
-	cout << "Total transversals of order 10 " << pm.size() << endl;
-	cout << "Total diagonal transversals of order 10 " << pm_diag.size() << endl;
-	cout << "Total transversals of Brown square" << tvr_bel.size() << endl;
-	cout << "Total diagonal transversals of Brown square" << tvr_bel_diag.size() << endl;
-
-	//generate_3r_rnd_rc1(10, 20);
-	
-
-	vector<vector<int>> ls5(5, vector<int>(5));
-	for (int i = 0; i < 5; i++) {
-		ls5[0][i] = i;
-	}
-	for (int i = 1; i < 5; i++) {
-		for (int j = 0; j < 5; j++)
-		{
-			ls5[i][j] = -1;
-		}
-	}
-	vector<vector<int>> ls6(6, vector<int>(6));
-	for (int i = 0; i < 6; i++) {
-		ls6[0][i] = i;
-	}
-	for (int i = 1; i < 6; i++) {
-		for (int j = 0; j < 6; j++)
-		{
-			ls6[i][j] = -1;
-		}
-	}
-
-	vector<vector<int>> ls7(7, vector<int>(7));
-	for (int i = 0; i < 7; i++) {
-		ls7[0][i] = i;
-	}
-	for (int i = 1; i < 7; i++) {
-		for (int j = 0; j < 7; j++)
-		{
-			ls7[i][j] = -1;
-		}
-	}
-
-	vector<vector<int>> ls8(8, vector<int>(8));
-	for (int i = 0; i < 8; i++) {
-		ls8[0][i] = i;
-	}
-	for (int i = 1; i < 8; i++) {
-		for (int j = 0; j < 8; j++)
-		{
-			ls8[i][j] = -1;
-		}
-	}
-
-	vector<vector<int>> a_d = compute_masked_LS(a, m_diag);
-	vector<vector<int>> a_5 = compute_masked_LS(a, 50);
-	vector<vector<int>> b_4 = compute_masked_LS(b, 40);
-	vector<vector<int>> b_45 = compute_masked_LS(b, 45);
-	vector<vector<int>> a_4 = compute_masked_LS(a, 40);
-	vector<vector<int>> b_5 = compute_masked_LS(b, 50);
-	unsigned long long lim = 1000000000000000;
-	Generate_DLS_masked_DLXrefresh(10, true, lim, "D:\\LSTests\\b45.log", b_45);
-
-	Test_rnd_rc4(10, 100000);
+	//correctness crosscheck
 	//Generate_DLS_masked_crosscheck(10, true, 100000, "D:\\LSTests\\test_13_07.log", a_4);
-	//Generate_DLS_masked_compare(10, true, 100000, "D:\\LSTests\\test_13_07.log", a_4);
 
-	//generate_permutations_masked_rc1(10, pm2, a40, true);
 
-	//vector<vector<int>> a_d = compute_masked_LS(a, m_diag);
-	vector<vector<int>> b_d = compute_masked_LS(b, m_diag);
-	vector<vector<vector<int>>> SQ;
+	//comparing different algorithms with each other.
+	Test_rnd_rc4(10, 100000);
 	
 	
-	
-	//Generate_DLS_masked_nocheck(10, true, lim, true, false, "D:\\LSTests\\r3_8.log", r3_8, SQ);
 	
 	
 	cout << endl << "Finish";
